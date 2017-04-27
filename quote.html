@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Quote</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css"/>
+  <link href="https://fonts.googleapis.com/css?family=Dancing+Script|Righteous" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+  <style>
+    body {
+      background-color: #392613;
+      background-image: url("https://cdn.pixabay.com/photo/2015/03/12/23/07/landscape-670958_1280.jpg");
+      background-repeat: no-repeat;
+      background-position: center top;
+      /*background-attachment: fixed;  // not scroll with the rest of the page*/
+    }
+    #title, #new_quote {
+      font-family: 'Righteous', cursive;
+      color: #130d06;
+    }
+
+    #title {
+        font-size: 60px;
+        padding-top: 15px;
+        text-align: right;
+        text-shadow: 2px 2px #392613;  
+    }
+
+    #quote, #author {
+      font-family: 'Dancing Script', cursive;
+      font-size: 45px;
+      color: #e7e0b1;  
+    }
+
+    #quote {
+      padding-top: 100px; 
+    }
+
+    #author {
+      padding-bottom: 25px;
+      text-align: right;
+    }
+
+    #sign {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      padding: 0px 0px 25px 125px;
+    }
+
+    /* Button new_quote */
+    #new_quote {
+      font-size: 25px;
+      background-color: transparent;
+      text-shadow: 1px 1px #e7e0b1;  
+    }
+    /* avoid blue border around button */
+    .btn:focus,.btn:active {    
+       outline: none !important;
+    }
+    /*change color of texton mouse over and mouse out*/
+    .btn:hover{
+      color: #e7e0b1 !important;
+      text-shadow: 2px 2px #130d06 !important; 
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container-fluid">
+
+    <div class="row">  <!-- title-->
+      <div class="col-xs-11" id="title">
+          Quote of the Day
+      </div>
+    </div>  <!--title-->
+
+    <div class="row">
+      <div class="col-xs-offset-5 col-xs-6">
+
+          <div class="row text-justify" id="quote">  <!-- quote-->
+          </div>  <!--quote-->
+          
+          <div class="row" id="author">  <!-- author-->
+          </div>  <!--author-->
+
+          <div class="row pull-right">  <!--button-->
+             <button type="button" class="btn" id="new_quote">New quote</button>
+          </div>  <!--button-->
+
+      </div>
+    </div>
+    
+     <div class="row" id="sign" style="color: #e7e0b1 ">  <!--sign-->
+        Coded by Oxana Matveyuk
+    </div>
+
+  </div>
+
+  <script>
+    "use strict";
+
+    var quoteAPI = "http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&_jsonp=?";
+
+    function getQuote() {
+
+      $.ajax({
+        url: quoteAPI,
+        type: "GET",
+        dataType: 'jsonp',
+        cache: false,
+        success: function (data, status, error) {
+          console.log('success', data);
+          $("#quote").html(data[0].content);
+          $("#author").html(data[0].title);
+        },
+        error: function (data, status, error) {
+          console.log('error', data, status, error);
+        }
+      })
+    }
+
+    getQuote();
+
+    $("#new_quote").on("click", function() {
+      event.preventDefault();
+      getQuote();
+
+    });
+
+  </script>
+
+</body>
+</html>
+
