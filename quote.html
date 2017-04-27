@@ -13,7 +13,7 @@
 
   <style>
     body {
-      background-color: #392613;
+      background-color: #130d06;
       background-image: url("https://cdn.pixabay.com/photo/2015/03/12/23/07/landscape-670958_1280.jpg");
       background-repeat: no-repeat;
       background-position: center top;
@@ -63,12 +63,31 @@
     .btn:focus,.btn:active {    
        outline: none !important;
     }
-    /*change color of texton mouse over and mouse out*/
+    /*change color of text on mouse over and mouse out*/
     .btn:hover{
       color: #e7e0b1 !important;
       text-shadow: 2px 2px #130d06 !important; 
     }
 
+    /* Style all font awesome icons */
+    .fa {
+        padding: 6px 12px 6px 12 px;
+        font-size: 25px;
+        width: 50px;
+        text-align: center;
+        text-decoration: none;
+    }
+
+    /* Add a hover effect if you want */
+    .fa:hover {
+        opacity: 0.7;
+    }
+
+    /* Set a specific color for twitter brand */
+    .fa-twitter {
+        background: #55ACEE;
+        color: white;
+    }
   </style>
 </head>
 
@@ -91,7 +110,9 @@
           </div>  <!--author-->
 
           <div class="row pull-right">  <!--button-->
-             <button type="button" class="btn" id="new_quote">New quote</button>
+            <!-- <a href="#" class="fa fa-twitter">Twitt</a> -->
+            <button type="button" class="btn" id="new_quote">New quote</button>&nbsp; &nbsp; &nbsp;
+            <button type="button" class="btn fa fa-twitter" id="twitter"></button>
           </div>  <!--button-->
 
       </div>
@@ -109,7 +130,6 @@
     var quoteAPI = "http://quotesondesign.com/wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1&_jsonp=?";
 
     function getQuote() {
-
       $.ajax({
         url: quoteAPI,
         type: "GET",
@@ -133,6 +153,31 @@
       getQuote();
 
     });
+
+    $("#twitter").on("click", function() {
+      event.preventDefault();
+
+      var quote = $("#quote").text();
+      var author = $("#author").html();
+      var tweetedLink;
+      if(!window.location.origin) {
+        tweetedLink = window.location.protocol + "//" + window.location.hostname + window.location.pathname;
+      } else {
+         tweetedLink = window.location.origin + window.location.pathname;
+      }
+
+      // length of twitt 140 chars. Create tweet
+      var tweet = ""
+      if (author.length + 4 + quote.length <= 140) {
+        tweet = author + ": \"" + quote + "\"";
+      } else {
+        tweet = author + ": \"" + quote.slice(0, (140 - author.length - 8 - tweetedLink.length)) + "...\" " + tweetedLink;
+      }
+      console.log(tweet);
+
+      window.open("http://twitter.com/intent/tweet?text=" + tweet, "twitterwindow", "height=280, width=550, toolbar=0, location=0, menubar=0, directories=0, scrollbars=0");
+
+    });       
 
   </script>
 
