@@ -1,0 +1,1 @@
+<?php header( 'Location: /san_francisco.html' ) ;  ?>
